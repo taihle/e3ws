@@ -1,0 +1,63 @@
+<div ng-cloak layout="column" layout-fill>
+    <header>
+        <md-toolbar md-scroll-shrink>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Home" ng-click="close($event)">
+                    <md-tooltip md-direction="bottom">Main Menu</md-tooltip>
+                    <md-icon md-svg-icon="theme/images/arrow_back.svg"></md-icon>
+                </md-button>
+
+                <md-button class="md-icon-button" aria-label="{{room.to.firstname}}">
+                    <md-tooltip md-direction="bottom">{{room.to.firstname}}</md-tooltip>
+                    <img src="theme/images/profile-icon.png" ng-src="{{absImagePathUrl}}{{room.to.icon}}" class="user_icon_thumb_small"
+                        alt="{{room.to.firstname}}" on-error-src="theme/images/profile-icon.png" />
+                </md-button>
+
+                <h2 flex md-truncate>{{title}}</h2>
+
+                <!-- <span flex></span> -->
+
+                <md-button class="md-icon-button" aria-label="{{currentUser.firstname}}">
+                    <md-tooltip md-direction="bottom">{{currentUser.firstname}}</md-tooltip>
+                    <img src="theme/images/profile-icon.png" ng-src="{{absImagePathUrl}}{{currentUser.icon}}" class="user_icon_thumb_small"
+                        alt="{{currentUser.firstname}}" on-error-src="theme/images/profile-icon.png" />
+                </md-button>
+            </div>
+        </md-toolbar>
+    </header>
+
+    <md-content id="mcMessageContainer" flex style="overflow-y: auto;" scroll-bottom="messages" >
+        <md-list-item class="md-3-line" data-ng-repeat="m in messages" style="height: auto; min-height: 44px;">
+
+            <img ng-if="m.user.username != currentUser.username" ng-src="{{absImagePathUrl}}{{m.user.icon}}" class="md-avatar" alt="{{m.user.username}}"
+                on-error-src="theme/images/account_circle.svg">
+            <div ng-if="m.user.username != currentUser.username" class="md-list-item-text">
+                <p ng-bind="m.msg"></p>
+                <p style="font-size: 10px;" ng-bind="m.date | date:'MM/dd/yyyy HH:mm:ss'"></p>
+            </div>
+
+            <div ng-if="m.user.username == currentUser.username" class="md-list-item-text" style="text-align: right; margin-right: 15px;">
+                <p ng-bind="m.msg"></p>
+                <p style="font-size: 10px;" ng-bind="m.date | date:'MM/dd/yyyy HH:mm:ss'"></p>
+            </div>
+            <img ng-if="m.user.username == currentUser.username" ng-src="{{absImagePathUrl}}{{m.user.icon}}" class="md-avatar" alt="{{m.user.username}}"
+                on-error-src="theme/images/account_circle.svg">
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-content>
+
+    <footer>
+        <md-toolbar md-scroll-shrink>
+            <div class="md-toolbar-tools">
+                <md-input-container class="md-block" flex fill>
+                    <!-- <label>Type your message here</label> -->
+                    <input aria-label="Type your message here" ng-model="response" ng-keypress="onInputKeypress($event)" style="background-color: white; margin-top: 22.5px;">
+                </md-input-container>
+
+                <md-button class="md-icon-button" aria-label="Send" ng-click="sendMessage()">
+                    <md-icon md-svg-icon="theme/images/send.svg"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+    </footer>
+</div>

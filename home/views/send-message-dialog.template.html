@@ -1,0 +1,26 @@
+<md-dialog id="send-message-dialog" style="max-width: 90%; width: 400px;" aria-label="Send Message" ng-cloak>
+    <form name="sendMessageForm" ng-submit="dialog.send()">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Send Message</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dialog.close()">
+                    <md-icon md-svg-src="theme/images/close.svg" aria-label="Close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-input-container class="md-block">
+                    <textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button type="submit" ng-disabled="userForm.$invalid" class="md-raised md-primary">Send</md-button>
+            <md-button type="cancel" class="md-raised md-primary" ng-click="dialog.close()">Cancel</md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

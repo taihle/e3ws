@@ -1,0 +1,107 @@
+<div ng-controller="profileCtrl as ctrl" ng-cloak style="overflow: hidden;">
+    <md-toolbar md-scroll-shrink>
+        <div class="md-toolbar-tools">
+            <h2 flex md-truncate>Profile</h2>
+            <md-button class="md-raised md-accent md-hue-3" aria-label="Update" ng-click="ctrl.save($event)">
+                Update
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Close" ng-click="ctrl.close($event)">
+                <md-icon md-svg-icon="theme/images/close.svg"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab id="general">
+                <md-tab-label>General</md-tab-label>
+                <md-tab-body>
+                    <md-content layout-padding flex layout-fill style="overflow: auto; margin-top: 10px;">
+                        <md-list-item class="md-3-line" style="margin-bottom: -20px;">
+                            <md-button class="md-icon-button" aria-label="Profile Picture" ng-click="ctrl.changeProfilePicture();"
+                                style="height: 100px; width: 100px; margin-left: -10px; margin-top: -10px;">
+                                <md-tooltip md-direction="bottom">Click to change picture</md-tooltip>
+                                <img src="theme/images/profile-icon.png" on-error-src="theme/images/profile-icon.png"
+                                    ng-src="{{absImagePathUrl}}{{user.icon}}" class="md-avatar" alt="{{user.firstname}}" style="height: 100%; width: 100%;" />
+                            </md-button>
+                            <div class="md-list-item-text">
+                                <h3 style="margin-left: 7.5px;">User Name: {{user.username}}</h3>
+                                <br />
+                                <md-button class="md-raised md-accent md-hue-3" aria-label="Update" ng-click="ctrl.changePassword($event)">Change
+                                    Password</md-button>
+                            </div>
+                        </md-list-item>
+                        <br />
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>First Name</label>
+                                <input md-maxlength="30" required name="firstname" ng-model="user.firstname" />
+                                <div class="hint" ng-if="showHints">Tell us what we should call you!</div>
+                                <div ng-messages="userForm.firstname.$error" ng-if="!showHints">
+                                    <div ng-message="required">First Name is required.</div>
+                                    <div ng-message="md-maxlength">First name has to be less than 30 characters long.</div>
+                                </div>
+                            </md-input-container>
+                            <div flex="5" hide-xs hide-sm>
+                                <!-- Spacer //-->
+                            </div>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Last Name</label>
+                                <input md-maxlength="30" required name="lastname" ng-model="user.lastname" />
+                                <div class="hint" ng-if="showHints">Tell us what we should call you!</div>
+                                <div ng-messages="userForm.lastname.$error" ng-if="!showHints">
+                                    <div ng-message="required">Last Name is required.</div>
+                                    <div ng-message="md-maxlength">Last name has to be less than 30 characters long.</div>
+                                </div>
+                            </md-input-container>
+
+                            <div flex="5" hide-xs hide-sm>
+                                <!-- Spacer //-->
+                            </div>
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Email</label>
+                                <input name="email" ng-model="user.email" required minlength="10" maxlength="100"
+                                    ng-pattern="/^.+@.+\..+$/" />
+                                <div class="hint" ng-show="showHints">How can we reach you?</div>
+
+                                <div ng-messages="userForm.email.$error" ng-hide="showHints">
+                                    <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                                        Your email must be between 10 and 100 characters long and look like an e-mail
+                                        address.
+                                    </div>
+                                </div>
+                            </md-input-container>
+
+                            <div flex="5" hide-xs hide-sm>
+                                <!-- Spacer //-->
+                            </div>
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Phone Number</label>
+                                <input class="input-phone" type='text' phone-input name="phone" ng-model="user.phone"
+                                    ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" />
+
+                                <div class="hint" ng-show="showHints">(###) ###-####</div>
+
+                                <div ng-messages="userForm.phone.$error" ng-hide="showHints">
+                                    <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
+                                </div>
+                            </md-input-container>
+
+                            <style>
+                                /*
+                                * The Material demos system does not currently allow targeting the body element, so this
+                                * must go here in the HTML.
+                                */
+                                body[dir=rtl] .hint {
+                                    right: 2px;
+                                    left: auto;
+                                }
+                            </style>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

@@ -1,0 +1,23 @@
+<div ng-cloak style="overflow: hidden;">
+    <md-toolbar md-scroll-shrink>
+        <div class="md-toolbar-tools">
+            <h2 flex md-truncate>Settings</h2>
+            <md-button class="md-raised md-accent md-hue-3" aria-label="Update" ng-click="save($event)">
+                Save
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Close" ng-click="close($event)">
+                <md-icon md-svg-icon="theme/images/close.svg"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout-padding flex layout-fill style="overflow: auto; margin-top: 10px;">
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Chat Server Url</label>
+            <input required name="chatserver" ng-model="data.chatserver" />
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Location (Zipcode)</label>
+            <input required name="zipcode" ng-model="data.zipcode" />
+        </md-input-container>        
+    </md-content>
+</div>

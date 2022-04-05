@@ -1,0 +1,91 @@
+    <md-toolbar class="md-hue-1 _md _md-toolbar-transitions">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Home" ng-click="toggleSidenav($event)">
+                <md-icon md-svg-icon="theme/images/menu.svg"></md-icon>
+            </md-button>
+
+            <div ng-bind-html="wi"></div>
+            
+            <span flex></span>
+
+            <h1 class="md-title text-center">
+                <img src="theme/images/logo-full.png" style="height: 50px; padding: 2.5px; cursor: pointer;" ng-click="gotoMain();"></img>
+            </h1>
+
+            <span flex></span>
+
+            <md-button ng-if="currentUser" class="md-icon-button" aria-label="Group Chat" ng-click="createRoom($event)">
+                <md-tooltip md-direction="bottom">Group Chat</md-tooltip>
+                <md-icon md-svg-icon="theme/images/forum.svg"></md-icon>
+            </md-button>
+
+            <md-button ng-if="!currentUser" class="md-icon-button" aria-label="Login" ng-click="login($event)">
+                    <md-tooltip md-direction="bottom">Login</md-tooltip>
+                    <md-icon md-svg-icon="theme/images/account_circle.svg"></md-icon>
+            </md-button>
+
+            <md-button ng-if="currentUser" class="md-icon-button" aria-label="Profile" ng-click="viewProfile($event)">
+                    <md-tooltip md-direction="bottom">Profile</md-tooltip>
+                    <img src="theme/images/profile-icon.png" ng-src="{{absImagePathUrl}}{{currentUser.icon}}" class="user_icon_thumb_small" alt="{{currentUser.firstname}}" on-error-src="theme/images/profile-icon.png" />
+                </md-button>
+
+
+<!--
+            <md-menu ng-hide="currentUser">
+                <md-button class="md-icon-button" aria-label="Login" ng-click="openUserMenu($mdMenu, $event)">
+                    <md-tooltip md-direction="bottom">Signup/Login</md-tooltip>
+                    <md-icon md-svg-icon="theme/images/account_circle.svg"></md-icon>
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button ng-click="signUp($event)">
+                            <md-icon md-svg-icon="theme/images/perm_contact_calendar.svg" md-menu-align-target></md-icon>
+                            Sign up
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="login($event)">
+                            <md-icon md-svg-icon="theme/images/input.svg" md-menu-align-target></md-icon>
+                            Log in
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="viewSettings()">
+                            <md-icon md-svg-icon="theme/images/settings.svg"></md-icon>
+                            Settings...
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+            <md-menu ng-show="currentUser">
+                <md-button class="md-icon-button" aria-label="Profile" ng-click="openUserMenu($mdMenu, $event)">
+                    <md-tooltip md-direction="bottom">Profile/Logout</md-tooltip>
+                    <img src="theme/images/profile-icon.png" ng-src="{{absImagePathUrl}}{{currentUser.icon}}" class="user_icon_thumb_small" alt="{{currentUser.firstname}}" on-error-src="theme/images/profile-icon.png" />
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button ng-click="viewProfile()">
+                            <md-icon md-svg-icon="theme/images/account_circle.svg"></md-icon>
+                            Profile...
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="logoff()">
+                            <md-icon md-svg-icon="theme/images/input.svg"></md-icon>
+                            Log out
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="viewSettings()">
+                            <md-icon md-svg-icon="theme/images/settings.svg"></md-icon>
+                            Settings...
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        -->
+        </div>
+        </div>
+
+    </md-toolbar>

@@ -1,0 +1,7 @@
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env
+/*.bat
+/e3
+/e3_demo
