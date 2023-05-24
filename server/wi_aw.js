@@ -2,6 +2,7 @@ const https_lib = require('https');
 
 // weather information service from OWM
 var wi_aw = {
+    SERVER_URL: "https://dataservice.accuweather.com/",
     AW_API_APP_ID: process.env.AW_API_APP_ID,
 
     // TODO: icon mapping
@@ -99,15 +100,20 @@ var wi_aw = {
   },
     */
     getLocationKey: function(zipcode_or_city, onDone) {
-        var url = "https://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=" + wi_aw.AW_API_APP_ID + "&q=" + zipcode_or_city;
+        var url = wi_aw.SERVER_URL + "locations/v1/postalcodes/search?apikey=" + wi_aw.AW_API_APP_ID + "&q=" + zipcode_or_city;
+        if (isNaN(zipcode_or_city)) {
+            url = wi_aw.SERVER_URL + "locations/v1/cities/search?apikey=" + wi_aw.AW_API_APP_ID + "&q=" + zipcode_or_city;
+        }        
+        
         console.debug("wi_aw.getLocationKey('" + zipcode_or_city + "'): url = " + url);
+        
         https_lib.get(url, function (resp) {
             let data = '';
             resp.on('data', function (chunk) { data += chunk; });
             resp.on('end', function () {
                 console.debug("wi_aw.getLocationKey('" + zipcode_or_city + "'): ok - " + data);                    
                 var ret = JSON.parse(data);
-                if (ret) {                        
+                if (ret && Array.isArray(ret)) {
                     onDone(ret[0].Key);
                 }
             });
@@ -149,7 +155,7 @@ var wi_aw = {
         console.debug("wi_aw.getLiveWeatherDataAW(" + zipcode_or_city + "):");
         try {
             wi_aw.getLocationKey(zipcode_or_city, function(location_key){
-                var url = "https://dataservice.accuweather.com/currentconditions/v1/" + location_key + "?apikey=" + wi_aw.AW_API_APP_ID + "&details=true";
+                var url = wi_aw.SERVER_URL + "currentconditions/v1/" + location_key + "?apikey=" + wi_aw.AW_API_APP_ID + "&details=true";
                 https_lib.get(url, function (resp) {
                     let data = '';
                     resp.on('data', function (chunk) { data += chunk; });
@@ -157,8 +163,11 @@ var wi_aw = {
                         // console.log(data);
                         console.debug("wi_aw.getLiveWeatherDataAW('" + zipcode_or_city + "'): ok");                    
                         var ret = JSON.parse(data);
-                        if (ret) {
+                        if (ret && Array.isArray(ret)) {
                             onDone(wi_aw.convertFromAWData(ret[0]));
+                        }
+                        else {
+                            onDone(null);
                         }
                     });
                 }).on("error", function (err) {
