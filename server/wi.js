@@ -3,6 +3,7 @@ const https_lib = require('https');
 const WeatherInfo = require('./models/wi');
 const wi_noaa = require('./wi_noaa');
 const wi_owm = require('./wi_owm');
+const wi_aw = require('./wi_aw');
 
 // weather information service
 var wi = {
@@ -112,7 +113,10 @@ var wi = {
 
     getLiveWeatherData: function(zipcode_or_city, onDone, service) {
         console.debug("wi.getLiveWeatherData(" + zipcode_or_city + "): " + (service ? " service = " + service : ""));
-        if (service == 'noaa') {
+        if (service == 'aw') {
+            wi_aw.getLiveWeatherDataAW(zipcode_or_city, onDone);
+        }
+        else if (service == 'noaa') {
             wi_noaa.getLiveWeatherDataGov(zipcode_or_city, onDone);
         }
         else if (service == 'owm') {
@@ -121,7 +125,14 @@ var wi = {
         else {
             wi_owm.getLiveWeatherDataOWM(zipcode_or_city, function(data){
                 if (!data) {
-                    wi_noaa.getLiveWeatherDataGov(zipcode_or_city, onDone);
+                    wi_aw.getLiveWeatherDataAW(zipcode_or_city, function(data){
+                        if (!data) {
+                            wi_noaa.getLiveWeatherDataGov(zipcode_or_city, onDone);
+                        }
+                        else {
+                            onDone(data);
+                        }
+                    });    
                 }
                 else {
                     onDone(data);

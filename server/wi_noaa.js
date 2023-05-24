@@ -20,7 +20,7 @@ var wi_noaa = {
         path: '/'
     },
 
-    getWiIconFromGovData: function() {
+    getWiIconFromGovData: function(p) {
         return '';
     },
 
