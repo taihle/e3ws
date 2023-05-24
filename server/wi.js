@@ -29,6 +29,7 @@ var wi = {
                 return;
             }
             if (zipcode == 'Pembroke, BM') zipcode = "Hamilton,BM";
+            
             WeatherInfo.findOne({ zipcode: zipcode }).exec(function (err, data) {
                 if (data && !err) {
                     if (wi.validate(data.data, zipcode, service)) {
