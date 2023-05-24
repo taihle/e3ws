@@ -533,10 +533,12 @@ var wi = {
     },
 
     convertFromGovData: function(station, data) {
+        console.debug("wi.convertFromGovData(" + station.stationIdentifier + "):"); // data = " + JSON.stringify(data, null, 2));
         var ret = null;
         try  {
-            if (data && data.properties) {
-                var p = data.properties;
+            if (data && data.features) {
+                // just get the first observation data
+                var p = data.features[0].properties;
                 if (p.temperature.value !== null) {
                     console.debug("wi.convertFromGovData(): timestamp = " + p.timestamp + " => " + new Date(Date.parse(p.timestamp)));
                     ret = { 
@@ -564,13 +566,14 @@ var wi = {
     },
 
     fetchWeatherRequest: function(path, onDone) {
+        console.debug("fetchWeatherRequest(): path = " + path);
         try {
             wi.weather_req_options.path = path;
             https_lib.get(wi.weather_req_options, function (resp) {
                 let data = '';
                 resp.on('data', function (chunk) { data += chunk; });
                 resp.on('end', function () {
-                    // console.log(data);    
+                    // console.log(data);
                     console.debug("wi.fetchWeatherRequest('" + path + "'): ok");
                     onDone(JSON.parse(data));
                 });
@@ -608,34 +611,11 @@ var wi = {
     },
 
     getCurrentObservationData: function(station, onDone) {
+        console.debug("getCurrentObservationData(" + station.stationIdentifier + "):");
         try {
-            var path = '/stations/' + station.stationIdentifier + '/observations/current';
-            wi.fetchWeatherRequest(path, function(data){
+            var path = '/stations/' + station.stationIdentifier + '/observations';
+            wi.fetchWeatherRequest(path, function(data) {
                 onDone(wi.convertFromGovData(station, data));
-                // if (data && data.properties) {
-                //     var p = data.properties;
-                //     if (p.temperature.value !== null) {
-                //         console.log("wi.getCurrentObservationData(): timestamp = " + p.timestamp + " => " + new Date(Date.parse(p.timestamp)));
-                //         var ret = { 
-                //             api: "noaa",
-                //             station: station.stationIdentifier,
-                //             condition: p.textDescription,
-                //             observation_time: Date.parse(p.timestamp) / 1000,
-                //             temp_c: Math.round(p.temperature.value * 100) / 100,
-                //             temp_f: Math.round(((p.temperature.value * 9/5) + 32) * 100) / 100,
-                //             icon: p.textDescription.toLowerCase(),
-                //             icon_url: p.icon
-                //         };
-                //         onDone(ret);
-                //     }
-                //     else {
-                //         console.log("wi.getCurrentObservationData(): invalid temperature @ " + station.stationIdentifier);
-                //         onDone(null);
-                //     }
-                // }
-                // else {
-                //     onDone(null);
-                // }
             });
         }
         catch(err) {
@@ -645,6 +625,7 @@ var wi = {
     },
   
     getCurrentObservationDataFromList: function(i, lst, now, ret, onDone) {
+        console.debug("getCurrentObservationDataFromList(" + i + "):");
         if (i < lst.length) {
             wi.getCurrentObservationData(lst[i], function(data){
                 if (data) {
@@ -666,7 +647,7 @@ var wi = {
                 }
             });
         }
-        else {
+        else {            
             var delta = wi.getObservationTimeDelta(now, ret.data.observation_time);
             if (delta > wi.VALID_OBSERVATION_DELTA) {                
                 ret.data.observation_time = Math.floor(now / 1000); // assume the best

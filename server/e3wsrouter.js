@@ -8,7 +8,7 @@ var e3wsRouter = function (app) {
     app.get("/wi", function (req, res) {
         const parsedUrl = url.parse(req.url, true);
         const query = parsedUrl.query;
-        console.debug("wi query = ", query);
+        console.debug("wi query = ", JSON.stringify(query));
         if (query.loc) {
             wi.get(query.loc,
                 function (data) {
@@ -18,7 +18,7 @@ var e3wsRouter = function (app) {
                 function (err) {
                     res.status(404).send(err);
                 },
-                query.service
+                query.api
             );
         }
         else {
@@ -30,7 +30,7 @@ var e3wsRouter = function (app) {
         var zipcode = req.params.zipcode;
         const parsedUrl = url.parse(req.url, true);
         const query = parsedUrl.query;
-        console.debug("/wi/:zipcode = " + zipcode);
+        console.debug("/wi/:zipcode = " + zipcode + ", query = " + JSON.stringify(query));
         wi.get(zipcode,
             function (data) {
                 res.setHeader('Content-Type', 'application/json');
@@ -39,7 +39,7 @@ var e3wsRouter = function (app) {
             function (err) {
                 res.status(404).send(err);
             },
-            query.full
+            query.api
         );
     });
 
