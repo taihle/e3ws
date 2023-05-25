@@ -124,21 +124,21 @@ var wi = {
             wi_owm.getLiveWeatherDataOWM(zipcode_or_city, onDone);
         }
         else {
-            wi_owm.getLiveWeatherDataOWM(zipcode_or_city, function(data){
+            wi_aw.getLiveWeatherDataAW(zipcode_or_city, function(data) {
                 if (!data) {
-                    wi_aw.getLiveWeatherDataAW(zipcode_or_city, function(data){
+                    wi_owm.getLiveWeatherDataOWM(zipcode_or_city, function(data) {
                         if (!data) {
                             wi_noaa.getLiveWeatherDataGov(zipcode_or_city, onDone);
                         }
                         else {
                             onDone(data);
                         }
-                    });    
+                    });
                 }
                 else {
                     onDone(data);
                 }
-            });    
+            });
         }
     }
 };
